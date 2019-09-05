@@ -1,3 +1,9 @@
+## Url shortener
+URL shortener. (see https://tinyurl.com/ as an example)
+Technology
+● Backend: NodeJS, express, mongoose, morgan, cors
+● Web interface: Web technologies (HTML, Javascript, CSS)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -8,18 +8,13 @@ const API_PORT = 3001;
 const app = express();
 var cors = require('cors');
 
-//cluster0
-// felix8971
-// C9iWEXNXTLESm14b
-// whitelist entry: 0.0.0.0/0
 
 app.use(cors());
 const router = express.Router();
 
-// this is our MongoDB database
+// our MongoDB database
 const dbRoute =
   'mongodb+srv://felix8971:C9iWEXNXTLESm14b@cluster0-jprip.mongodb.net/test?retryWrites=true&w=majority'
-   //'mongodb://<your-db-username-here>:<your-db-password-here>@ds249583.mlab.com:49583/fullstack_app';
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 
@@ -36,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-// this is our get method
+// our get method
 // this method fetches all available data in our database
 router.get('/getData', (req, res) => {
   Data.find((err, data) => {
