@@ -8,6 +8,9 @@
     font-size: 1.2em;
 }
 
+li {
+    padding: '10px' 
+}
 .custom-alas span {
     margin-right: 3px;
 }

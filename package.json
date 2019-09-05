@@ -4,10 +4,27 @@
   "private": true,
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^4.1.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.6.12",
     "morgan": "^1.9.1"
   },
-  "scripts": {}
+  "scripts": {
+    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+  },
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Felix8971/url_shortener.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Felix8971/url_shortener/issues"
+  },
+  "homepage": "https://github.com/Felix8971/url_shortener#readme"
 }

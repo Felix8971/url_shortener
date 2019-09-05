@@ -8,13 +8,11 @@ const API_PORT = 3001;
 const app = express();
 var cors = require('cors');
 
-
 app.use(cors());
 const router = express.Router();
 
 // our MongoDB database
-const dbRoute =
-  'mongodb+srv://felix8971:C9iWEXNXTLESm14b@cluster0-jprip.mongodb.net/test?retryWrites=true&w=majority'
+const dbRoute = 'mongodb+srv://felix8971:C9iWEXNXTLESm14b@cluster0-jprip.mongodb.net/test?retryWrites=true&w=majority'
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 
@@ -30,6 +28,12 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
+
+//create code to redirect the user to url when he try to acces the tiny url
+// router.get('/ssss:id', (req, res) => {
+// read shortUrl in database
+// redirect the user
+// res.redirect(url); ??
 
 // our get method
 // this method fetches all available data in our database
@@ -50,35 +54,33 @@ router.post('/updateData', (req, res) => {
   });
 });
 
-// this is our delete method
-// this method removes existing data in our database
-router.delete('/deleteData', (req, res) => {
-  const { id } = req.body;
-  Data.findByIdAndRemove(id, (err) => {
-    if (err) return res.send(err);
-    return res.json({ success: true });
-  });
-});
 
-// this is our create methid
-// this method adds new data in our database
+// adds new data in our database
 router.post('/putData', (req, res) => {
   let data = new Data();
+ 
+  const { id, url } = req.body;
 
-  const { id, message } = req.body;
+  //check if the url doesn't exist in database here
 
-  if ((!id && id !== 0) || !message) {
+  // .......
+
+   
+  if ((!id && id !== 0) || !url ) {
     return res.json({
       success: false,
       error: 'INVALID INPUTS',
     });
   }
-  data.message = message;
+  data.url = url;
+  data.shortUrl = Math.random().toString(36).substring(5);
   data.id = id;
+  console.log('data=',data);
   data.save((err) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
+
 });
 
 // append /api for our http requests
