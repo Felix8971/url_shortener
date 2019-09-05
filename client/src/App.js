@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return ( 
+     <div className="main-container">
+        <form>
+          <h2>Enter a long URL to make tiny:</h2>        
+          <div>
+            <input className="url" type="text" id="url" name="url"/>
+            <input className="button" type="button" value="Make TinyURL!"/>
+          </div>
+          <hr/>
+          <div className="custom-alias">
+            <span>Custom alias (optional):</span>
+            <input type="text" id="alias" name="alias" />
+            <p className="help">(May contain letters, numbers, and dashes.)</p>
+          </div>
+        </form>
+     </div>
+     );
+  }
 }
 
 export default App;
