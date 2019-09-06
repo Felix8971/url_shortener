@@ -55,17 +55,17 @@ app.get('/:s', function (req, res) {
 //   });
 // });
 
-var getShortUrl = () => { return Math.random().toString(36).substring(6); }
+var getShortUrl = () => { return Math.random().toString(36).substring(7); }
 
 // adds new element in our database
 router.post('/putData', (req, res) => {
-  const { id, url, customShortUrl } = req.body;
-  if ((!id && id !== 0) || !url ) {
-    return res.json({
-      success: false,
-      error: 'INVALID INPUTS',
-    });
-  }
+  const { /*id,*/ url, customShortUrl } = req.body;
+  // if ((!id && id !== 0) || !url ) {
+  //   return res.json({
+  //     success: false,
+  //     error: 'INVALID INPUTS',
+  //   });
+  // }
   
   //If shortUrl doesn't exist in database we create a new document 
   let shortUrl = customShortUrl || getShortUrl();
@@ -76,7 +76,7 @@ router.post('/putData', (req, res) => {
       let _data = new Data(); 
       _data.url = url;
       _data.shortUrl = shortUrl;
-      _data.id = id;
+      //_data.id = id;
       console.log('_data=',_data);
       _data.save((err) => {
         if (err) return res.json({ success: false, error: err });

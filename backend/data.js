@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // our data base's data structure 
 const DataSchema = new Schema(
   {
-    id: Number,
+    //id: Number,
     url: String,
     shortUrl: String,
   },

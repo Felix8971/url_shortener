@@ -1,10 +1,7 @@
 .main-container {
     display:flex;
     justify-content: center;
-}
-
-.custom-alias {
-    font-size: 1.2em;
+    font-family: sans-serif;
 }
 
 li {
@@ -39,7 +36,7 @@ form {
 }
 
 .url-container {
-    display:flex;
+    display: flex;
 }
 
 .button {
