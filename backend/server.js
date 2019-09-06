@@ -48,18 +48,18 @@ app.get('/:s', function (req, res) {
 });
 
 // fetches all available data in our database
-router.get('/getData', (req, res) => {
-  Data.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
-});
+// router.get('/getData', (req, res) => {
+//   Data.find((err, data) => {
+//     if (err) return res.json({ success: false, error: err });
+//     return res.json({ success: true, data: data });
+//   });
+// });
 
 var getShortUrl = () => { return Math.random().toString(36).substring(6); }
 
 // adds new element in our database
 router.post('/putData', (req, res) => {
-  const { id, url } = req.body;
+  const { id, url, customShortUrl } = req.body;
   if ((!id && id !== 0) || !url ) {
     return res.json({
       success: false,
@@ -68,7 +68,7 @@ router.post('/putData', (req, res) => {
   }
   
   //If shortUrl doesn't exist in database we create a new document 
-  let shortUrl = getShortUrl();
+  let shortUrl = customShortUrl || getShortUrl();
   Data.find({shortUrl}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     if (data && data.length === 0){
@@ -85,8 +85,10 @@ router.post('/putData', (req, res) => {
           shortUrl: 'http://localhost:'+API_PORT+'/'+shortUrl,
         });
       });
-    } else{
-      return res.json({ success: false });
+    } else {
+      let msg = 'Sorry, this url already exit in database !';
+      console.log(msg);
+      return res.json({ success: false, msg });
     }
   });
 });

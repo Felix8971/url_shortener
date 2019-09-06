@@ -1,28 +1,3 @@
-//import React, { Component } from "react";
-
-// class App extends Component {
-//   render() {
-//     return ( 
-//      <div className="main-container">
-//         <form>
-//           <h2>Enter a long URL to make tiny:</h2>        
-//           <div>
-//             <input className="url" type="text" id="url" name="url"/>
-//             <input className="button" type="button" value="Make TinyURL!"/>
-//           </div>
-//           <hr/>
-//           <div className="custom-alias">
-//             <span>Custom alias (optional):</span>
-//             <input type="text" id="alias" name="alias" />
-//             <p className="help">(May contain letters, numbers, and dashes.)</p>
-//           </div>
-//         </form>
-//      </div>
-//      );
-//   }
-// }
-
-// export default App;
 import React, { Component } from 'react';
 import axios from 'axios';
 
@@ -33,6 +8,8 @@ class App extends Component {
     id: 0,
     url: null,
     shortUrl: null,
+    customShortUrl: null,
+    errorMsg: null,
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -74,20 +51,26 @@ class App extends Component {
 
   // our put method that uses our backend api
   // to create new query into our data base
-  putDataToDB = (url) => {
+  putDataToDB = (url, customShortUrl) => {
     let currentIds = this.state.data.map((data) => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
       ++idToBeAdded;
     }
-
-    axios.post('http://localhost:3001/api/putData', {
+    
+    this.setState({ shortUrl: null });
+    this.setState({ errorMsg: null });
+    url && axios.post('http://localhost:3001/api/putData', {
       id: idToBeAdded,
-      url: url,     
+      url,
+      customShortUrl: customShortUrl,
     }).then((res)=>{
       if ( res.data.success ){
-        console.log("data from server=",res.data.shortUrl);
+        //console.log("data from server=",res.data.shortUrl);
         this.setState({ shortUrl: res.data.shortUrl });
+      } else {
+        console.log(res.data.msg);
+        this.setState({ errorMsg: res.data.msg });
       }
     }).catch(error => {
       console.log(error)
@@ -98,7 +81,7 @@ class App extends Component {
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
-    const { data, shortUrl } = this.state;
+    const { shortUrl, errorMsg } = this.state;
     return (
       <div>
         {/* <ul>
@@ -116,7 +99,7 @@ class App extends Component {
         <div className="main-container">
          <form>
            <h2>Enter a long URL to make tiny:</h2>        
-           <div>
+           <div className="url-container">
             <input 
               onChange={(e) => this.setState({ url: e.target.value })} 
               className="url" 
@@ -125,7 +108,7 @@ class App extends Component {
               name="url"
             />
             <input 
-              onClick={() => this.putDataToDB(this.state.url)}
+              onClick={() => this.putDataToDB(this.state.url, this.state.customShortUrl)}
               className="button" 
               type="button" 
               value="Make TinyURL!"
@@ -133,16 +116,28 @@ class App extends Component {
           </div>
            <hr/>
           <div className="custom-alias">
-             <span>Custom alias (optional):</span>
-            <input type="text" id="alias" name="alias" />
+             <span>Custom alias (optional):</span>          
+            <input 
+              onChange={(e) => this.setState({ customShortUrl: e.target.value })} 
+              type="text" 
+              id="alias" 
+              name="alias" 
+            />
             <p className="help">(May contain letters, numbers, and dashes.)</p>
           </div>
           {!shortUrl ? 
             ''
             : 
             <div className="short-url">
-              <span>Your short url:</span>
-              <a href={shortUrl} target="_blank">{shortUrl}</a>
+              <span className="title">Your short url:</span>
+              <a href={shortUrl} rel="noopener noreferrer" target="_blank">{shortUrl}</a>
+            </div> 
+          }
+          {!errorMsg ? 
+            ''
+            : 
+            <div className="error-msg">
+              {errorMsg}
             </div> 
           }
          </form>

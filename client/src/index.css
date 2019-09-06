@@ -1,16 +1,16 @@
-.main-container{
+.main-container {
     display:flex;
     justify-content: center;
-    
 }
 
-.custom-alias{
+.custom-alias {
     font-size: 1.2em;
 }
 
 li {
     padding: '10px' 
 }
+
 .custom-alas span {
     margin-right: 3px;
 }
@@ -26,6 +26,7 @@ hr {
 input {
     padding: 4px;
     font-size: 1.2em;
+    border: 1px solid #C2C7D0;
 }
 
 form {
@@ -37,14 +38,46 @@ form {
     width: 67%;
 }
 
-.button{
-    width: 30%;
+.url-container {
+    display:flex;
 }
 
-h2{
+.button {
+    width: 30%;
+    color: #fff;
+    background-color: #0f9d58;
+    text-shadow: none;
+    background-image: linear-gradient(to bottom, #2bbe60, #0f9d58);
+    border: 1px solid #0f9d58;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), inset 0 -1px 4px rgba(151,159,175,0.2);
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    padding: 4px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+    text-decoration: none !important;
+}
+
+h2 {
     margin-top: 0;
 }
 
 .short-url {
     font-size: 1.2em;
+}
+
+.title{
+    color: #0f9d58;
+    font-weight: 600;
+    margin-right: 6px;
+}
+
+.error-msg {
+    font-size: 1.2em;
+    font-weight: 600;
+    color:red;
 }
