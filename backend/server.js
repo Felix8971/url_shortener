@@ -47,14 +47,6 @@ app.get('/:s', function (req, res) {
   });
 });
 
-// fetches all available data in our database
-// router.get('/getData', (req, res) => {
-//   Data.find((err, data) => {
-//     if (err) return res.json({ success: false, error: err });
-//     return res.json({ success: true, data: data });
-//   });
-// });
-
 var getShortUrl = () => { return Math.random().toString(36).substring(7); }
 
 // adds new element in our database
@@ -66,6 +58,12 @@ router.post('/putData', (req, res) => {
   //     error: 'INVALID INPUTS',
   //   });
   // }
+  
+  //use https://app.snyk.io  to find vulnerabilities
+  //scalability: We can split our data into smaller chunks, then spread those chunks around onto different servers.
+  //The right cluster (used to save the data) can be choosen according to the first letter found in shortUrl  
+  //todo: add some extra check to avoid special caracters in customShortUrl
+
   
   //If shortUrl doesn't exist in database we create a new document 
   let customUrl = customShortUrl === null ? '' : customShortUrl.trim();
