@@ -29,14 +29,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-//create code to redirect the user to url when he try to acces the tiny url
-// router.get('/ssss:id', (req, res) => {
-// read shortUrl in database
-// redirect the user
-// res.redirect(url); ??
+app.get('/', function (req, res) {
+  console.log('Hello !');
+});
 
-// our get method
-// this method fetches all available data in our database
+//Redirect the user to the corresponding url when he tries to access the tiny url
+app.get('/:s', function (req, res) {
+  let shortUrl = req.params.s;
+  Data.find({shortUrl}, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    if (data && data.length === 1){
+      res.redirect(data[0].url);
+    } else{
+      console.log("shortUrl doesnt exist");
+      return res.json({ success: false });
+    }
+  });
+});
+
+// fetches all available data in our database
 router.get('/getData', (req, res) => {
   Data.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
@@ -44,43 +55,40 @@ router.get('/getData', (req, res) => {
   });
 });
 
-// this is our update method
-// this method overwrites existing data in our database
-router.post('/updateData', (req, res) => {
-  const { id, update } = req.body;
-  Data.findByIdAndUpdate(id, update, (err) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
-  });
-});
+var getShortUrl = () => { return Math.random().toString(36).substring(6); }
 
-
-// adds new data in our database
+// adds new element in our database
 router.post('/putData', (req, res) => {
-  let data = new Data();
- 
   const { id, url } = req.body;
-
-  //check if the url doesn't exist in database here
-
-  // .......
-
-   
   if ((!id && id !== 0) || !url ) {
     return res.json({
       success: false,
       error: 'INVALID INPUTS',
     });
   }
-  data.url = url;
-  data.shortUrl = Math.random().toString(36).substring(5);
-  data.id = id;
-  console.log('data=',data);
-  data.save((err) => {
+  
+  //If shortUrl doesn't exist in database we create a new document 
+  let shortUrl = getShortUrl();
+  Data.find({shortUrl}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
+    if (data && data.length === 0){
+      //Save in database
+      let _data = new Data(); 
+      _data.url = url;
+      _data.shortUrl = shortUrl;
+      _data.id = id;
+      console.log('_data=',_data);
+      _data.save((err) => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ 
+          success: true, 
+          shortUrl: 'http://localhost:'+API_PORT+'/'+shortUrl,
+        });
+      });
+    } else{
+      return res.json({ success: false });
+    }
   });
-
 });
 
 // append /api for our http requests

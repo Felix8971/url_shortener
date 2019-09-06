@@ -43,11 +43,11 @@ class App extends Component {
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
   componentDidMount() {
-    this.getDataFromDb();
-    if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 9000);
-      this.setState({ intervalIsSet: interval });
-    }
+    // this.getDataFromDb();
+    // if (!this.state.intervalIsSet) {
+    //   let interval = setInterval(this.getDataFromDb, 9000);
+    //   this.setState({ intervalIsSet: interval });
+    // }
   }
 
   // never let a process live forever
@@ -75,7 +75,6 @@ class App extends Component {
   // our put method that uses our backend api
   // to create new query into our data base
   putDataToDB = (url) => {
-    debugger;
     let currentIds = this.state.data.map((data) => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
@@ -85,6 +84,13 @@ class App extends Component {
     axios.post('http://localhost:3001/api/putData', {
       id: idToBeAdded,
       url: url,     
+    }).then((res)=>{
+      if ( res.data.success ){
+        console.log("data from server=",res.data.shortUrl);
+        this.setState({ shortUrl: res.data.shortUrl });
+      }
+    }).catch(error => {
+      console.log(error)
     });
   };
 
@@ -92,10 +98,10 @@ class App extends Component {
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
-    const { data } = this.state;
+    const { data, shortUrl } = this.state;
     return (
       <div>
-        <ul>
+        {/* <ul>
           {data.length <= 0
             ? 'NO DB ENTRIES YET'
             : data.map((_data, index) => (
@@ -105,7 +111,7 @@ class App extends Component {
                   <span> short url: </span> {_data.shortUrl} <br/>                
                 </li>
               ))}
-        </ul>
+        </ul> */}
 
         <div className="main-container">
          <form>
@@ -131,6 +137,14 @@ class App extends Component {
             <input type="text" id="alias" name="alias" />
             <p className="help">(May contain letters, numbers, and dashes.)</p>
           </div>
+          {!shortUrl ? 
+            ''
+            : 
+            <div className="short-url">
+              <span>Your short url:</span>
+              <a href={shortUrl} target="_blank">{shortUrl}</a>
+            </div> 
+          }
          </form>
         </div>
       </div>

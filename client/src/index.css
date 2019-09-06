@@ -15,7 +15,7 @@ li {
     margin-right: 3px;
 }
 
-.help{
+.help {
     font-size: 0.8em;
 }
 
@@ -33,7 +33,7 @@ form {
     border: 1px solid #bebebe;
 }
 
-.url{
+.url {
     width: 67%;
 }
 
@@ -43,4 +43,8 @@ form {
 
 h2{
     margin-top: 0;
+}
+
+.short-url {
+    font-size: 1.2em;
 }
