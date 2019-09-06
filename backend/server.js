@@ -68,7 +68,7 @@ router.post('/putData', (req, res) => {
   // }
   
   //If shortUrl doesn't exist in database we create a new document 
-  let shortUrl = customShortUrl || getShortUrl();
+  let shortUrl = customShortUrl.trim() || getShortUrl();
   Data.find({shortUrl}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     if (data && data.length === 0){
@@ -86,7 +86,7 @@ router.post('/putData', (req, res) => {
         });
       });
     } else {
-      let msg = 'Sorry, this url already exit in database !';
+      let msg = 'Sorry, this url already exists in the database !';
       console.log(msg);
       return res.json({ success: false, msg });
     }

@@ -15,6 +15,7 @@ class App extends Component {
   putDataToDB = (url, customShortUrl) => {
     this.setState({ shortUrl: null });
     this.setState({ errorMsg: null });
+    
     url && axios.post('http://localhost:3001/api/putData', {
       url,
       customShortUrl: customShortUrl,
@@ -45,7 +46,7 @@ class App extends Component {
             name="url"
           />
           <input 
-            onClick={() => this.putDataToDB(this.state.url, this.state.customShortUrl.trim())}
+            onClick={() => this.putDataToDB(this.state.url, this.state.customShortUrl)}
             className="button" 
             type="button" 
             value="Make TinyURL!"
