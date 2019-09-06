@@ -1,3 +1,0 @@
-1) afficher short url dans la page
-2) tester si le shorturl genere n'existe pas deja en base
-3)

@@ -45,7 +45,7 @@ class App extends Component {
             name="url"
           />
           <input 
-            onClick={() => this.putDataToDB(this.state.url, this.state.customShortUrl)}
+            onClick={() => this.putDataToDB(this.state.url, this.state.customShortUrl.trim())}
             className="button" 
             type="button" 
             value="Make TinyURL!"
