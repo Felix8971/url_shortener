@@ -59,7 +59,7 @@ var getShortUrl = () => { return Math.random().toString(36).substring(7); }
 
 // adds new element in our database
 router.post('/putData', (req, res) => {
-  const { /*id,*/ url, customShortUrl } = req.body;
+  const { url, customShortUrl } = req.body;
   // if ((!id && id !== 0) || !url ) {
   //   return res.json({
   //     success: false,
@@ -68,7 +68,8 @@ router.post('/putData', (req, res) => {
   // }
   
   //If shortUrl doesn't exist in database we create a new document 
-  let shortUrl = customShortUrl.trim() || getShortUrl();
+  let customUrl = customShortUrl === null ? '' : customShortUrl.trim();
+  let shortUrl = customUrl || getShortUrl();
   Data.find({shortUrl}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     if (data && data.length === 0){
