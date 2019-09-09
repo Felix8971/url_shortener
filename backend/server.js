@@ -1,4 +1,7 @@
 
+var http = require('http');
+//const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -7,6 +10,7 @@ const Data = require('./data');
 const API_PORT = 3001;
 const app = express();
 var cors = require('cors');
+
 
 app.use(cors());
 const router = express.Router();
@@ -36,9 +40,11 @@ app.get('/', function (req, res) {
 //Redirect the user to the corresponding url when he tries to access the tiny url
 app.get('/:s', function (req, res) {
   let shortUrl = req.params.s;
+  console.log('shortUrl=',shortUrl);
   Data.find({shortUrl}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     if (data && data.length === 1){
+      console.log('redirect');
       res.redirect(data[0].url);
     } else{
       console.log("shortUrl doesnt exist");
@@ -49,25 +55,36 @@ app.get('/:s', function (req, res) {
 
 var getShortUrl = () => { return Math.random().toString(36).substring(7); }
 
-// adds new element in our database
+//Create a new short url, adds new element in database and return short url to client
 router.post('/putData', (req, res) => {
   const { url, customShortUrl } = req.body;
-  // if ((!id && id !== 0) || !url ) {
-  //   return res.json({
-  //     success: false,
-  //     error: 'INVALID INPUTS',
-  //   });
-  // }
-  
-  //use https://app.snyk.io  to find vulnerabilities
-  //scalability: We can split our data into smaller chunks, then spread those chunks around onto different servers.
-  //The right cluster (used to save the data) can be choosen according to the first letter found in shortUrl  
-  //todo: add some extra check to avoid special caracters in customShortUrl
 
+  //Verify url and customShortUrl format
+  const pattern_url = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+  if ( !pattern_url.test(url) ) {
+    return res.json({
+      success: false,
+      msg: 'Please enter a valid url',
+    });
+  }
+  if ( url.length >= 2000 ) {
+    return res.json({
+      success: false,
+      msg: 'url must be less than 2000 characters',
+    });
+  }
   
-  //If shortUrl doesn't exist in database we create a new document 
-  let customUrl = customShortUrl === null ? '' : customShortUrl.trim();
+  let customUrl = customShortUrl === null ? '' : customShortUrl.substr(0, 50).trim();
+  const pattern_alias = /([\da-z\.-]+)([\/\w \.-]*)*\/?$/;
+  if ( customUrl && !pattern_alias.test(customUrl) ) {
+    return res.json({
+      success: false,
+      msg: 'Please enter a valid custom alias',
+    });
+  }
   let shortUrl = customUrl || getShortUrl();
+
+  //If shortUrl doesn't exist in database we create a new document 
   Data.find({shortUrl}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     if (data && data.length === 0){
@@ -75,8 +92,7 @@ router.post('/putData', (req, res) => {
       let _data = new Data(); 
       _data.url = url;
       _data.shortUrl = shortUrl;
-      //_data.id = id;
-      console.log('_data=',_data);
+      //console.log('_data=',_data);
       _data.save((err) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ 
@@ -95,5 +111,18 @@ router.post('/putData', (req, res) => {
 // append /api for our http requests
 app.use('/api', router);
 
+var options = {
+  key: fs.readFileSync( __dirname +  '\\sslcert\\server.key' ),
+  cert: fs.readFileSync( __dirname + '\\sslcert\\server.cert' ),
+  passphrase: 'YOUR PASSPHRASE HERE',
+  // requestCert: false,
+  // rejectUnauthorized: false
+};
+
+var httpServer = http.createServer(app);
+//var httpsServer = https.createServer(options, express);
+
+httpServer.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+//httpsServer.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
 // launch our backend into a port
-app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+//app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));

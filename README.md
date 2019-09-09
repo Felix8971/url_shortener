@@ -13,14 +13,14 @@ A code challenge made with node.js, mongodb, express, react.js
 2. run `cd url_shortener; npm install` 
 3. run `cd client; npm install` 
 4. run `cd ..` 
-5. run `npm start` (wait for the message: You can now view client in the browser.)
+5. run `npm start` (wait for the message "You can now view client in the browser.")
 6. visit <http://localhost:3000/> 
 
 ### Vulnerabilties
-Test all the untrusted data coming from the user add some extra check to avoid special characters in custom Short Url for example.
-We can use a toll like https://app.snyk.io to find vulnerabilities.
+Test all the untrusted data coming from the user
+We can use a tool like https://app.snyk.io to find vulnerabilities in our npm packages.
   
 ### scalability
 We can split our data into smaller chunks, then spread those chunks around onto different servers.
-The right cluster (used to save the data) can be choosen according to the first letter found in shortUrl.
+Idea: The right cluster (used to save the data) can be choosen according to the first letter found in shortUrl.
  
