@@ -1,9 +1,8 @@
 
 var http = require('http');
-
 const express = require('express');
-const https = require('https');
-const fs = require('fs');
+//const https = require('https');
+//const fs = require('fs');
 const helmet = require('helmet')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -40,7 +39,7 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-//Redirect the user to the corresponding url when he tries to access the tiny url
+//Redirect the user to the corresponding url when he tries to access a tiny url
 app.get('/:s', function (req, res) {
   let shortUrl = req.params.s;
   console.log('shortUrl=',shortUrl);
