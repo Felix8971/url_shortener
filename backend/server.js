@@ -1,17 +1,20 @@
 
 var http = require('http');
-//const https = require('https');
-const fs = require('fs');
+
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const helmet = require('helmet')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const Data = require('./data');
 const API_PORT = 3001;
-const app = express();
+
 const dbRoute = require("./secret");
 var cors = require('cors');
+
+const app = express();
 
 app.use(helmet());
 app.use(cors());
@@ -33,8 +36,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-app.get('/', function (req, res) {
-  console.log('Hello !');
+app.get('/', (req, res) => {
+  res.send('Hello World');
 });
 
 //Redirect the user to the corresponding url when he tries to access the tiny url
@@ -111,15 +114,16 @@ router.post('/putData', (req, res) => {
 // append /api for our http requests
 app.use('/api', router);
 
-// var options = {
-//   key: fs.readFileSync( __dirname +  '\\sslcert\\server.key' ),
-//   cert: fs.readFileSync( __dirname + '\\sslcert\\server.cert' ),
-// };
 
-var httpServer = http.createServer(app);
-//var httpsServer = https.createServer(options, express);
-
-httpServer.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
-//httpsServer.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
 // launch our backend into a port
-//app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+var httpServer = http.createServer(app);
+httpServer.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+
+//var httpsServer = https.createServer(options, app);
+//httpsServer.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+// https.createServer({
+//   key: fs.readFileSync('./key.pem'),
+//   cert: fs.readFileSync('./cert.pem'),
+//   passphrase: 'hello'
+// }, app)
+// .listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));

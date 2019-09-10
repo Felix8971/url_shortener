@@ -9,24 +9,26 @@ A code challenge made with node.js, mongodb, express, react.js
 
 ### To get started
 
-1. `git clone https://github.com/Felix8971/url_shortener.git`
+1. run `git clone https://github.com/Felix8971/url_shortener.git`
 2. run `cd url_shortener; npm install` 
 3. run `cd client; npm install` 
 4. run `cd ..` 
-5. run `npm start` (wait for the message "You can now view client in the browser.")
-6. visit <http://localhost:3000/> 
+5. run `npm start`, wait for the message "You can now view client in the browser"
+6. then visit <http://localhost:3000/> 
+
 
 ### Security issues and how I would fix them
 Done:
-- Test all the untrusted data coming from the user (done)
-- use an online tool like https://app.snyk.io to find vulnerabilities in our npm packages. (done)
+- Test all the untrusted data coming from the user
+- use an online tool like https://app.snyk.io to find vulnerabilities in npm packages. 
 - use Helmet to prevent XSS attacks
 - use eslint-plugin-security to help identify potential security issues
 
 To be done:
-- use rate-limiter-flexible to protect the application from being overwhelmed by too many requests at the same time 
+- use rate-limiter-flexible package to protect the application from being overwhelmed by too many requests at the same time 
 - use validator.js instead of regular expression to prevent Regular Expression Denial of Service.
 - limit body size in bodyparser
+- do not push sensitive information like secret.js on the repository (use .gitignore)
 
 ### Scalability issues and how you would fix them
 We can split our data into smaller chunks, then spread those chunks around onto different servers.
