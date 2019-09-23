@@ -11,7 +11,7 @@ const Data = require('./data');
 const API_PORT = 3001;
 
 const dbRoute = require("./secret");
-var cors = require('cors');
+const cors = require('cors');
 
 const app = express();
 
@@ -22,7 +22,7 @@ const router = express.Router();
 // connects our back end code with the database
 mongoose.connect(dbRoute, { useNewUrlParser: true });
 
-let db = mongoose.connection;
+const db = mongoose.connection;
 
 db.once('open', () => console.log('connected to the database'));
 
