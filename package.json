@@ -10,10 +10,13 @@
     "express-flash": "0.0.2",
     "helmet": "^3.21.0",
     "mongoose": "^5.6.12",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "snyk": "^1.258.2"
   },
   "scripts": {
-    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\"",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "description": "",
   "main": "index.js",
@@ -30,5 +33,6 @@
   "bugs": {
     "url": "https://github.com/Felix8971/url_shortener/issues"
   },
-  "homepage": "https://github.com/Felix8971/url_shortener#readme"
+  "homepage": "https://github.com/Felix8971/url_shortener#readme",
+  "snyk": true
 }
