@@ -10,7 +10,7 @@
     "express-flash": "0.0.2",
     "helmet": "^3.21.0",
     "mongoose": "^5.6.12",
-    "morgan": "^1.9.1"
+    "morgan": "^1.10.1"
   },
   "scripts": {
     "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
